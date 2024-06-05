@@ -240,10 +240,18 @@ fi
 echo_details "$submit_cmd"
 echo
 
-eval "${submit_cmd}"
+output=$(eval "${submit_cmd}" 2>&1)
 
 if [ $? -eq 0 ] ; then
     echo_done "Success"
+
+    FIREBASE_CONSOLE_URL=$(echo $output | grep -Eo "(http|https)://[a-zA-Z0-9./?=-_%:-]*" | sed -n 2p)
+    echo "firebase console url: ${FIREBASE_CONSOLE_URL}"
+    envman add --key FIREBASE_CONSOLE_URL --value "${FIREBASE_CONSOLE_URL}"
+
+    FIREBASE_APP_DISTRIBUTION_URL=$(echo $output | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sed -n 3p)
+    echo "firebase app distribution url: ${FIREBASE_APP_DISTRIBUTION_URL}"
+    envman add --key FIREBASE_APP_DISTRIBUTION_URL --value "${FIREBASE_APP_DISTRIBUTION_URL}"
 else
     echo_fail "Fail"
 fi
