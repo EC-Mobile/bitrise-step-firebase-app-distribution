@@ -137,3 +137,10 @@ inputs:
       value_options:
         - "false"
         - "true"
+outputs:
+  - FIREBASE_APP_DISTRIBUTION_URL:
+    opts:
+      title: Link to access build on device
+  - FIREBASE_CONSOLE_URL:
+    opts:
+      title: Build url on console
